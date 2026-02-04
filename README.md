@@ -43,19 +43,19 @@ Command to start client.c
 
 ## Features
 
--Handles multiple clients concurrently
--Enforces unique usernames
--Private messaging between two clients
--Broadcasting messages to all active clients
--File transfer between clients
--Client reporting system
--Server-controlled client removal
--Client-side encrypted message and file transmission
--Configurable idle timeout
--Group chat functionality:
- -Create a group
- -Join a group
- -Leave a group
- -Groups with no members are automatically deleted
+- Handles multiple clients concurrently
+- Enforces unique usernames
+- Private messaging between two clients
+- Broadcasting messages to all active clients
+- File transfer between clients
+- Client reporting system
+- Server-controlled client removal
+- Client-side encrypted message and file transmission
+- Configurable idle timeout
+- Group chat functionality:
+ - Create a group
+ - Join a group
+ - Leave a group
+ - Groups with no members are automatically deleted
 
 ## Still in Process
