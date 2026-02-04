@@ -1,17 +1,7 @@
-# ChatRoom in C
+# ChatWave
 
 ## OverView
-ChatRoom in C with Socket Programming using threads and using select system call. Both Threads and Select system call allows to handle multiple clients in socket programming simultaneosly. Private messages, group chats and file tranfer are supported. Messages and files transfer are end to end encrypted. No one outside of the chat, not even server, can read or listen to them. Check the [Features](#features) section for more.
-
-
-## Table of Contents
-- [Overview](#overview)
-- [Using Threads](#using-threads)
-- [Using Select](#using-select)
-- [Features](#features)
-- [Commands Supported](#commands-supported)
-- [Developer Protocols followed](#developer-protocols-followed)
-  
+ChatWave in C with Socket Programming using threads and using select system call. Both Threads and Select system call allows to handle multiple clients in socket programming simultaneosly. Private messages, group chats and file tranfer are supported. Messages and files transfer are client side encrypted. No one outside of the chat, during transmission, can read or listen to them. Check the [Features](#features) section for more.
 
 ## Using Threads
 serverThread.c and clientThread.c uses threads to achieve Client Server Architecture.
@@ -52,44 +42,20 @@ Command to start client.c
  - All the messages received from clients and server will be shown in the file  
 
 ## Features
-- Handling Multiple Client
-- **Unique** Client can join and disconnect
-- Private Message between two Clients
-- Broadcasting to all Alive Clients
-- File transfer between two Clients
-- Reporting a Client using username
-- Client removal power to server
-- Messages and files are **end-to-end encrypted**
-- Time-out after 60 seconds (subjected to change)
-- Group chats supported
-- Features of group chats:
-  - Create a group
-  - Join a group
-  - Leave a group
-- Groups with no members automatically gets deleted
-- Group removal power to server
- 
-## Commands Supported 
-### Client side
-- `<message>` - for direct broadcasting the message to all client
-- `@<username> <message>` - enter the username of client to send the private message
-- `@<username> @file <fileName>` - to send file fileName
-- `#<username>` - to report a sus client with username
-- `EXIT` - to disconnect from the chat server
 
-  #### Group Chat
-    - `$CREATE <groupName>` - to create a group
-    - `$JOIN <groupName>` - to join a group
-    - `$LEAVE <groupName>` - to leave a group
-    - `$<groupName> <message>` - to send message in the group
-    - `$<groupName> @file <fileName>` - to send file fileName in the group
+-Handles multiple clients concurrently
+-Enforces unique usernames
+-Private messaging between two clients
+-Broadcasting messages to all active clients
+-File transfer between clients
+-Client reporting system
+-Server-controlled client removal
+-Client-side encrypted message and file transmission
+-Configurable idle timeout
+-Group chat functionality:
+ -Create a group
+ -Join a group
+ -Leave a group
+ -Groups with no members are automatically deleted
 
-
-### Server Side
-- `REMOVE <username>` - to kick out client with username
-- `DELETE <groupName>` - to delete the group with groupName 
-- `CLOSE` - to close the server
-
-## Developer Protocols followed
-- response from server to client should be of format `>> <server_message>...`
-
+## Still in Process
