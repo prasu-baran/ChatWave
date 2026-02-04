@@ -11,7 +11,6 @@ ChatRoom in C with Socket Programming using threads and using select system call
 - [Features](#features)
 - [Commands Supported](#commands-supported)
 - [Developer Protocols followed](#developer-protocols-followed)
-- [SiteImages](#siteimages)
   
 
 ## Using Threads
