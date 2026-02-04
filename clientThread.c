@@ -8,6 +8,10 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <pthread.h>
+#include <ctype.h>
+#include <sys/stat.h>
+#include <time.h>
+
 
 #define BUFFER_SIZE 512
 #define EXIT_KEYWORD "EXIT"
@@ -25,6 +29,20 @@ int sockfd;
 
 // message receiver from other clients will be present inside this file
 char* fileName;
+
+void sanitize_filename(char *name) {
+    for (int i = 0; name[i]; i++) {
+        if (!(isalnum(name[i]) || name[i] == '.' || name[i] == '_'))
+            name[i] = '_';
+    }
+}
+
+bool is_safe_filename(const char *name) {
+    if (strstr(name, "..")) return false;
+    if (strchr(name, '/')) return false;
+    if (strchr(name, '\\')) return false;
+    return true;
+}
 
 void encrypt_message(char* input, char* encrypted) {
     // to send encrypted message to server
@@ -77,8 +95,8 @@ void encrypt_message(char* input, char* encrypted) {
         if(input[last] == ' ') encrypted[pos++] = input[last++];
 
         // reads the fileName from the input message 
-        char* fileName = (char*)malloc(sizeof(char) * (len-last+1));
-        snprintf(fileName, len - last + 1, "%s", input + last);
+        char fileName[256];
+        snprintf(fileName, sizeof(fileName), "%s", input + last);
 
         while(input[last] != '\0') {
             encrypted[pos++] = input[last++];
@@ -270,7 +288,8 @@ int main(int argc, char *argv[]) {
     //opening the file with client name to see the message from other clients
     fileName = (char*)malloc(strlen(argv[3]) + 5);
     if(!fileName) error("Memory allocation failed");
-    snprintf(fileName, strlen(argv[3]) + 5, "%s.txt", argv[3]);
+    mkdir("chat_logs", 0755);
+    snprintf(fileName, strlen(argv[3]) + 20, "chat_logs/%s.log", argv[3]);
     printf("fileName: %s\n", fileName);
 
     FILE* chatPad = fopen(fileName, "a+");
