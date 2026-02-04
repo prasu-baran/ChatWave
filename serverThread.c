@@ -31,6 +31,9 @@ typedef struct group{
 Client clients[MAX_CLIENTS];
 Group groups[MAX_GROUPS];
 
+pthread_mutex_t clients_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t groups_mutex  = PTHREAD_MUTEX_INITIALIZER;
+
 // function to get the current time 
 void getTimeStamp(char *timestamp, size_t size) {
     time_t now = time(NULL);
@@ -43,6 +46,7 @@ void *timeout_checker(void *arg) {
         sleep(1);
         time_t now = time(NULL);
         for (int i = 0; i < MAX_CLIENTS; i++) {
+            pthread_mutex_lock(&clients_mutex);
             if (clients[i].socket != 0 && difftime(now, clients[i].last_active) > TIMEOUT) {
                 printf("Client %s Timed Out\n", clients[i].name);
                 char message[BUFFER_SIZE];
@@ -52,6 +56,7 @@ void *timeout_checker(void *arg) {
                 if(clients[i].socket!=0) close(clients[i].socket);
                 clients[i].socket = 0;
             }
+            pthread_mutex_unlock(&clients_mutex);
         }
         
         //NEW UTILS HERE
@@ -187,7 +192,7 @@ void* myClientThreadFunc(void* ind){
 
             // extracting the target name and message from buffer
             char target_name[50], message[BUFFER_SIZE];
-            sscanf(buffer, "@%s %[^\n]", target_name, message);
+            sscanf(buffer, "@%49s %255[^\n]", target_name, message);
             
             if(strcmp(target_name,"SHOW_ALL")==0){
                 // SHOWALL command to show all the clients connected to the server
@@ -580,7 +585,10 @@ void *server_thread(void *arg){
                     write(clients[i].socket, message, strlen(message)); 
 
                     close(clients[i].socket);
+                    REMOVE_CLIENT_FROM_EVERY_GROUP(i);
                     clients[i].socket = 0;
+                    bzero(clients[i].name, sizeof(clients[i].name));
+                    bzero(clients[i].report, sizeof(clients[i].report));
                     found = true;
                     fflush(stdin);
                     break;
