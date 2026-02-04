@@ -101,11 +101,4 @@ Command to start client.c
 ![siteimage](Gallery/Screenshot%20from%202025-02-15%2017-00-32.png)<br><br>
 ![siteimage](Gallery/Screenshot%20from%202025-02-15%2017-02-20.png)<br>
 
-## Github Link
-[GITHUB LINK OF THE PROJECT](https://github.com/pntu007/ChatRoom/tree/main)
 
-## Contributors
-- **Saurav Kumar Singh (22CS01010)**
-- **Suprit Naik (22CS01018)**
-- **Om Prakash Behera (22CS01041)**
-- **Harsh Maurya (22CS01046)**
